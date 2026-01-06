@@ -1,0 +1,91 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+
+/* 1. The new Tailwind v4 Entry Point (includes Preflight/Base by default) */
+@import "tailwindcss";
+
+/* 2. Optional: Keep your animation plugin if you are using it */
+@import "tw-animate-css";
+
+/* 3. Theme Configuration */
+@theme inline {
+  /* Define fonts */
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", sans-serif;
+
+  /* Your Shadcn-style variables */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-ring: var(--ring);
+
+  /* Custom Colors */
+  --color-accent: oklch(0.645 0.246 35.08); /* Vibrant Orange */
+  --color-muted: oklch(0.967 0.001 286.375);
+  --color-muted-foreground: oklch(0.552 0.016 285.938);
+}
+
+/* 4. Variable Definitions */
+:root {
+  --radius: 0.75rem;
+
+  /* Strictly White Background in OKLCH */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+
+  --border: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+}
+
+/* 5. Base Styles */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    /* This ensures your "white background" is applied app-wide */
+    @apply bg-background text-foreground antialiased font-sans;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Force headers to use the serif font when specified */
+  .font-serif {
+    font-family: var(--font-serif);
+  }
+}
+
+/* 6. Utility Classes */
+@layer utilities {
+  .glass {
+    @apply bg-white/40 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)];
+  }
+  
+  .glass-dark {
+    @apply bg-slate-900/80 backdrop-blur-lg border border-slate-700/50 shadow-2xl;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(255, 100, 0, 0.2);
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+}
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.mask-fade-edges { mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent); }

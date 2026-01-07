@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import {useCallback, useEffect, useState} from "react";
 import { Spinner } from "../src/components/ui/spinner.jsx";
 
 function App() {
@@ -15,26 +15,44 @@ function App() {
     "Indian",
   ];
 
-  const fetchRecipe = async () => {
+
+  const fetchRecipe = useCallback(async (signal) => {
     try {
       setLoading(true);
       const response = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/filter.php?a=${country}`
+          `https://www.themealdb.com/api/json/v1/1/filter.php?a=${country}`,{signal}
       );
       const data = await response.json();
       setRecipes(data.meals || []);
 
       // console.log(data.meals)
     } catch (err) {
+      // 3. Ignore the error if the request was intentionally aborted
+      if (err.name === 'AbortError') {
+        return;
+      }
       console.error("Failed to fetch recipes:", err);
     } finally {
-      setLoading(false);
+      // Only stop loading if the request wasn't aborted
+      if (!signal?.aborted) {
+        setLoading(false);
+      }
     }
+
   }, [country]);
 
+
   useEffect(() => {
-    fetchRecipe();
+    const controller = new AbortController(); // 1. Create a new controller
+
+    fetchRecipe(controller.signal); // 2. Pass the signal to your function
+
+    return () => {
+      controller.abort(); // 3. The "Cleanup": Aborts the request if dependencies change
+    };
   }, [fetchRecipe]);
+
+
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 via-white to-orange-50/30 text-slate-900 font-sans selection:bg-orange-100">

@@ -13,10 +13,9 @@ function App() {
     "French",
     "Chinese",
     "Indian",
-    
   ];
 
-  const fetchRecipe = useCallback(async () => {
+  const fetchRecipe = async () => {
     try {
       setLoading(true);
       const response = await fetch(
@@ -58,7 +57,7 @@ function App() {
         {/* Modern Hero Section */}
         <div className="relative mb-32 overflow-hidden px-4">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-linear-to-b from-orange-50/50 to-transparent -z-10 blur-3xl opacity-60"></div>
-          
+
           <div className="text-center space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
             <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full border border-orange-100 bg-orange-50/30 backdrop-blur-sm">
               <span className="relative flex h-2 w-2">
@@ -85,7 +84,9 @@ function App() {
             </div>
 
             <p className="max-w-2xl mx-auto text-slate-500 text-lg md:text-xl font-light leading-relaxed">
-              Explore the world through its most exquisite flavors. A curated collection of masterfully crafted recipes from every corner of the globe.
+              Explore the world through its most exquisite flavors. A curated
+              collection of masterfully crafted recipes from every corner of the
+              globe.
             </p>
 
             {/* Premium Category Selector */}
@@ -144,15 +145,17 @@ function App() {
                     />
                     <div className="absolute inset-0 bg-linear-to-t from-slate-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                   </div>
-                  
+
                   {/* Decorative Elements */}
-                  <div className={`absolute -inset-4 md:-inset-8 border border-slate-100 rounded-[2.5rem] md:rounded-[4rem] -z-10 transition-transform duration-700 group-hover:scale-105 ${
-                    index % 2 !== 0 ? "-rotate-2" : "rotate-2"
-                  }`}></div>
-                  
-                  <div className={`absolute top-1/2 -translate-y-1/2 w-32 h-32 bg-orange-200/20 blur-3xl -z-20 rounded-full ${
-                    index % 2 !== 0 ? "-right-8" : "-left-8"
-                  }`}></div>
+                  <div
+                    className={`absolute -inset-4 md:-inset-8 border border-slate-100 rounded-[2.5rem] md:rounded-[4rem] -z-10 transition-transform duration-700 group-hover:scale-105 ${
+                      index % 2 !== 0 ? "-rotate-2" : "rotate-2"
+                    }`}></div>
+
+                  <div
+                    className={`absolute top-1/2 -translate-y-1/2 w-32 h-32 bg-orange-200/20 blur-3xl -z-20 rounded-full ${
+                      index % 2 !== 0 ? "-right-8" : "-left-8"
+                    }`}></div>
                 </div>
 
                 {/* Typography Content */}
@@ -164,14 +167,17 @@ function App() {
                         Signature {country}
                       </span>
                     </div>
-                    
+
                     <h3 className="text-4xl md:text-6xl font-serif italic text-slate-900 leading-[1.1] tracking-tight group-hover:text-orange-600 transition-colors duration-500">
                       {meal.strMeal}
                     </h3>
                   </div>
 
                   <p className="text-slate-500 text-lg font-light leading-relaxed max-w-md mx-auto lg:mx-0">
-                    A masterfully crafted sensory experience, blending traditional {country} heritage with contemporary artisan techniques. Each ingredient is hand-selected for its purity and vibrant character.
+                    A masterfully crafted sensory experience, blending
+                    traditional {country} heritage with contemporary artisan
+                    techniques. Each ingredient is hand-selected for its purity
+                    and vibrant character.
                   </p>
 
                   <div className="pt-8 flex flex-col sm:flex-row items-center gap-6">
@@ -179,7 +185,7 @@ function App() {
                       <span className="relative z-10">Discover Recipe</span>
                       <div className="absolute inset-0 bg-linear-to-r from-orange-500 to-accent transform translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500"></div>
                     </button>
-                    
+
                     <div className="h-px w-12 bg-slate-200 hidden sm:block"></div>
                     <span className="text-[10px] font-bold tracking-widest text-slate-400 uppercase">
                       Prep: 45 Mins
@@ -194,7 +200,7 @@ function App() {
 
       <footer className="relative py-32 overflow-hidden bg-slate-900">
         <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-slate-700 to-transparent"></div>
-        
+
         <div className="max-w-7xl mx-auto px-8 relative z-10">
           <div className="flex flex-col items-center space-y-12">
             <span className="text-3xl font-black tracking-[0.3em] uppercase text-white">
@@ -202,11 +208,15 @@ function App() {
             </span>
 
             <div className="flex flex-wrap justify-center gap-12 text-slate-400">
-              {["About", "Ingredients", "Chefs", "Contact", "Newsletter"].map((item) => (
-                <button key={item} className="text-[11px] font-bold tracking-[0.2em] uppercase hover:text-orange-400 transition-colors duration-300">
-                  {item}
-                </button>
-              ))}
+              {["About", "Ingredients", "Chefs", "Contact", "Newsletter"].map(
+                (item) => (
+                  <button
+                    key={item}
+                    className="text-[11px] font-bold tracking-[0.2em] uppercase hover:text-orange-400 transition-colors duration-300">
+                    {item}
+                  </button>
+                )
+              )}
             </div>
 
             <div className="w-24 h-px bg-slate-800"></div>

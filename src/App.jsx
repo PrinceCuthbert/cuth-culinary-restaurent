@@ -5,15 +5,7 @@ function App() {
   const [country, setCountry] = useState("Mexican");
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
-  //
-  // const categories = [
-  //   "Mexican",
-  //   "Italian",
-  //   "Japanese",
-  //   "French",
-  //   "Chinese",
-  //   "Indian",
-  // ];
+
 
     const categories = [
         "Mexican", "Italian", "Japanese", "French", "Chinese", "Indian",

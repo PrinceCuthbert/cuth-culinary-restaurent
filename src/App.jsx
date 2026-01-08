@@ -5,15 +5,23 @@ function App() {
   const [country, setCountry] = useState("Mexican");
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
+  //
+  // const categories = [
+  //   "Mexican",
+  //   "Italian",
+  //   "Japanese",
+  //   "French",
+  //   "Chinese",
+  //   "Indian",
+  // ];
 
-  const categories = [
-    "Mexican",
-    "Italian",
-    "Japanese",
-    "French",
-    "Chinese",
-    "Indian",
-  ];
+    const categories = [
+        "Mexican", "Italian", "Japanese", "French", "Chinese", "Indian",
+        "American", "British", "Canadian", "Croatian", "Dutch", "Egyptian",
+        "Filipino", "Greek", "Irish", "Jamaican", "Kenyan", "Malaysian",
+        "Moroccan", "Polish", "Portuguese", "Russian", "Spanish", "Thai",
+        "Tunisian", "Turkish", "Vietnamese"
+    ];
 
 
   const fetchRecipe = useCallback(async (signal) => {

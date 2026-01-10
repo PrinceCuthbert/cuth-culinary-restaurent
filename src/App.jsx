@@ -247,7 +247,7 @@ function App() {
 
                                                 <div className="h-px w-12 bg-slate-200 hidden sm:block"></div>
                                                 <span className="text-[10px] font-bold tracking-widest text-slate-400 uppercase">
-                                                    Prep: 45 Mins
+                                                    Prep: 30 Mins
                                                 </span>
                                             </div>
                                         </div>

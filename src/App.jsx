@@ -28,6 +28,29 @@ function OfflineView() {
   );
 }
 
+function GenericErrorView({ message, onRetry }) {
+  return (
+    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6 text-center">
+      <div className="space-y-6 animate-in fade-in zoom-in duration-700">
+        <div className="relative inline-block">
+          <div className="text-8xl">⚠️</div>
+        </div>
+        <h1 className="text-4xl font-serif italic text-slate-900">Oops! Something went wrong</h1>
+        <p className="max-w-xs mx-auto text-slate-500 font-light leading-relaxed">
+          {message || "We encountered an unexpected error while preparing your culinary experience. Please try again."}
+        </p>
+        <button 
+          // onClick={onRetry} 
+          onClick={() => window.location.reload()}
+          className="px-8 py-3 bg-slate-900 text-white text-[10px] font-bold tracking-[0.3em] uppercase rounded-xl hover:bg-orange-600 transition-all shadow-lg"
+        >
+          Try Again
+        </button>
+      </div>
+    </div>
+  );
+}
+
 
 
 
@@ -54,6 +77,7 @@ function App() {
   const [country, setCountry] = useState("Mexican");
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 
 
@@ -62,7 +86,7 @@ function App() {
         "American", "British", "Canadian", "Croatian", "Dutch", "Egyptian",
         "Filipino", "Greek", "Irish", "Jamaican", "Kenyan", "Malaysian",
         "Moroccan", "Polish", "Portuguese", "Russian", "Spanish", "Thai",
-        "Tunisian", "Turkish", "Vietnamese"
+        "Tunisian", "Turkish", "Vietnamese","Burundian"
     ];
   
   
@@ -77,11 +101,22 @@ function App() {
   const fetchRecipe = useCallback(async (signal) => {
     try {
       setLoading(true);
+      setError(null);
       const response = await fetch(
           `https://www.themealdb.com/api/json/v1/1/filter.php?a=${country}`,{signal}
       );
+      
+      if (!response.ok) {
+        throw new Error(`Could not fetch recipes: ${response.statusText}`);
+      }
+
       const data = await response.json();
-      setRecipes(data.meals || []);
+      
+      if (!data.meals || data.meals.length === 0) {
+        throw new Error(`No recipes found for ${country} cuisine.`);
+      }
+
+      setRecipes(data.meals);
 
       // console.log(data.meals)
     } catch (err) {
@@ -90,6 +125,7 @@ function App() {
         return;
       }
       console.error("Failed to fetch recipes:", err);
+      setError(err.message || "Failed to fetch recipes. Please check your connection.");
     } finally {
       // Only stop loading if the request wasn't aborted
       if (!signal?.aborted) {
@@ -115,11 +151,18 @@ function App() {
     const fetchRecipeDetails = async (id) => {
         try {
             setLoading(true);
+            setError(null);
             const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+            
+            if (!response.ok) {
+                throw new Error(`Could not fetch recipe details: ${response.statusText}`);
+            }
+
             const data = await response.json();
             setSelectedRecipe(data.meals[0]); // Save the full recipe object
         } catch (err) {
             console.error("Error fetching details:", err);
+            setError(err.message || "Failed to fetch recipe details.");
         } finally {
             setLoading(false);
         }
@@ -128,6 +171,10 @@ function App() {
   
   if (!isOnline) {
     return <OfflineView />;
+  }
+
+  if (error) {
+    return <GenericErrorView message={error} onRetry={() => fetchRecipe()} />;
   }
 
 
@@ -151,7 +198,7 @@ function App() {
 
 
 
-        <main className="max-w-7xl mx-auto px-6 py-12">
+        <div className="max-w-7xl mx-auto px-6 py-12">
             {selectedRecipe ? (
                 /* --- DETAIL VIEW --- */
                 <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -172,9 +219,8 @@ function App() {
                     </div>
                 </div>
             ) : (
-
-                <>
-                    <main className="max-w-7xl mx-auto px-6 py-12 md:py-24">
+                <div className="space-y-12">
+                    <div className="max-w-7xl mx-auto px-6 py-12 md:py-24">
                         {/* Modern Hero Section */}
                         <div className="relative mb-32 overflow-hidden px-4">
                             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-linear-to-b from-orange-50/50 to-transparent -z-10 blur-3xl opacity-60"></div>
@@ -319,11 +365,10 @@ function App() {
                                 ))}
                             </div>
                         )}
-                    </main>
-
-                </>
+                    </div>
+                </div>
             )}
-        </main>
+        </div>
 
 
 

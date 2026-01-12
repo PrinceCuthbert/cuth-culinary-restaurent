@@ -1,7 +1,56 @@
 import {useCallback, useEffect, useState} from "react";
 import { Spinner } from "../src/components/ui/spinner.jsx";
 
+
+function OfflineView() {
+  return (
+    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6 text-center">
+      <div className="space-y-6 animate-in fade-in zoom-in duration-700">
+        <div className="relative inline-block">
+          <div className="text-8xl">📡</div>
+          <div className="absolute -top-2 -right-2 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white font-bold border-4 border-slate-50">
+            !
+          </div>
+        </div>
+        <h1 className="text-4xl font-serif italic text-slate-900">Connection Lost</h1>
+        <p className="max-w-xs mx-auto text-slate-500 font-light leading-relaxed">
+          It seems the flavors of the world are currently out of reach. 
+          Please check your internet connection to continue your culinary journey.
+        </p>
+        <button 
+          onClick={() => window.location.reload()} 
+          className="px-8 py-3 bg-slate-900 text-white text-[10px] font-bold tracking-[0.3em] uppercase rounded-xl hover:bg-orange-600 transition-all shadow-lg"
+        >
+          Try Reconnecting
+        </button>
+      </div>
+    </div>
+  );
+}
+
+
+
+
+
+function useOnlineStatus() {
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
+
+  return isOnline;
+}
+
 function App() {
+  const isOnline = useOnlineStatus();
   const [country, setCountry] = useState("Mexican");
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -15,6 +64,14 @@ function App() {
         "Moroccan", "Polish", "Portuguese", "Russian", "Spanish", "Thai",
         "Tunisian", "Turkish", "Vietnamese"
     ];
+  
+  
+  
+  
+  // useOnlineStatus.js
+
+
+
 
 
   const fetchRecipe = useCallback(async (signal) => {
@@ -67,6 +124,11 @@ function App() {
             setLoading(false);
         }
     };
+  
+  
+  if (!isOnline) {
+    return <OfflineView />;
+  }
 
 
 
@@ -86,6 +148,8 @@ function App() {
           </div>
         </div>
       </nav>
+
+
 
         <main className="max-w-7xl mx-auto px-6 py-12">
             {selectedRecipe ? (
